@@ -51,6 +51,7 @@ public class DataGenerator {
                 product.setDescription(product.getName() + " " + DESCRIPTION[j]);
                 product.setPrice(rnd.nextInt(240));
                 product.setId(FIRST.length * i + j + 1);
+                product.setDate(rnd.nextInt(31));
                 products.add(product);
             }
         }

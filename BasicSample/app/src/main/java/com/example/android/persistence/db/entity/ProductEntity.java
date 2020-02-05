@@ -28,6 +28,7 @@ public class ProductEntity implements Product {
     private String name;
     private String description;
     private int price;
+    private int date;
 
     @Override
     public int getId() {
@@ -65,15 +66,21 @@ public class ProductEntity implements Product {
         this.price = price;
     }
 
+    @Override
+    public int getDate() {return date;}
+
+    public void setDate(int date) { this.date = date;}
+
     public ProductEntity() {
     }
 
     @Ignore
-    public ProductEntity(int id, String name, String description, int price) {
+    public ProductEntity(int id, String name, String description, int price, int date) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.date = date;
     }
 
     public ProductEntity(Product product) {
@@ -81,5 +88,6 @@ public class ProductEntity implements Product {
         this.name = product.getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
+        this.date = product.getDate();
     }
 }

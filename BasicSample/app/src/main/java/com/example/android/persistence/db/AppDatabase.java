@@ -37,7 +37,7 @@ import com.example.android.persistence.db.entity.ProductEntity;
 import com.example.android.persistence.db.entity.ProductFtsEntity;
 import java.util.List;
 
-@Database(entities = {ProductEntity.class, ProductFtsEntity.class, CommentEntity.class}, version = 2)
+@Database(entities = {ProductEntity.class, ProductFtsEntity.class, CommentEntity.class}, version = 3)
 @TypeConverters(DateConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -57,6 +57,7 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (sInstance == null) {
                     sInstance = buildDatabase(context.getApplicationContext(), executors);
+
                     sInstance.updateDatabaseCreated(context.getApplicationContext());
                 }
             }
@@ -92,6 +93,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     }
                 })
             .addMigrations(MIGRATION_1_2)
+                .fallbackToDestructiveMigration()
             .build();
     }
 
@@ -133,8 +135,8 @@ public abstract class AppDatabase extends RoomDatabase {
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE VIRTUAL TABLE IF NOT EXISTS `productsFts` USING FTS4("
                 + "`name` TEXT, `description` TEXT, content=`products`)");
-            database.execSQL("INSERT INTO productsFts (`rowid`, `name`, `description`) "
-                + "SELECT `id`, `name`, `description` FROM products");
+            database.execSQL("INSERT INTO productsFts (`rowid`, `name`, `description`, `date`) "
+                + "SELECT `id`, `name`, `description`, `date` FROM products");
 
         }
     };
